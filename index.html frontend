@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkillTrust — Freelancer & Mentor Portal</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Aptos browser SDK (lightweight helper) -->
+  <script src="https://unpkg.com/aptos/dist/aptos.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <div class="logo">⚡</div>
+      <div>
+        <h1>SkillTrust</h1>
+        <p class="tag">Freelance escrow • Mentor verification • On-chain badges</p>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="connectBtn" class="btn ghost">Connect Wallet</button>
+      <div id="addr" class="addr">Not connected</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h2>Build your portfolio — safely.</h2>
+        <p class="lead">Find gigs, work under verified mentors, and earn on-chain skill badges (Soulbound NFTs) on Aptos.</p>
+
+        <div class="actions">
+          <button id="createGigBtn" class="btn">Create Demo Gig</button>
+          <button id="depositBtn" class="btn secondary">Deposit to Escrow</button>
+          <button id="viewBadgesBtn" class="btn ghost">My Badges</button>
+        </div>
+
+        <div class="notes">
+          <small>Tip: Use Petra wallet (Chrome/Edge extension) on Aptos devnet. Admin wallet can mint mentor/skill badges.</small>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <!-- Abstract blockchain illustration (inline SVG for uniqueness) -->
+        <svg viewBox="0 0 600 400" class="hero-illus" xmlns="http://www.w3.org/2000/svg" role="img">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#00e0ff"/>
+              <stop offset="1" stop-color="#7cffb2"/>
+            </linearGradient>
+          </defs>
+          <rect rx="20" width="100%" height="100%" fill="#041023"/>
+          <g transform="translate(60,40)">
+            <rect x="0" y="0" rx="16" width="420" height="320" fill="url(#g)" opacity="0.06"/>
+            <g transform="translate(40,30)">
+              <circle cx="100" cy="60" r="44" fill="#0f1724" stroke="url(#g)" stroke-width="3"/>
+              <rect x="170" y="10" rx="10" width="180" height="36" fill="#071024" stroke="rgba(255,255,255,0.03)"/>
+              <rect x="20" y="150" rx="10" width="320" height="120" fill="#071024" stroke="rgba(255,255,255,0.03)"/>
+              <text x="40" y="45" fill="#8ff7ff" font-size="20" font-family="Poppins" font-weight="600">SkillTrust</text>
+              <text x="40" y="180" fill="#bdefdc" font-size="14" font-family="Poppins">Escrow • Badges • Mentors</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h3>Freelancers</h3>
+        <p>Take gigs safely — clients fund escrow on Aptos. Funds released only after approval.</p>
+      </div>
+
+      <div class="card">
+        <h3>Mentors</h3>
+        <p>Get verified (GitHub / LinkedIn). Admin mints on-chain Mentor Badge — visible to everyone.</p>
+      </div>
+
+      <div class="card">
+        <h3>Skill Badges</h3>
+        <p>Complete gigs and receive soulbound skill badges — verifiable on Aptos Explorer.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h4>Developer Actions</h4>
+      <div class="dev-grid">
+        <button id="mintSkillBtn" class="btn small">Mint Skill Badge (admin)</button>
+        <button id="mintMentorBtn" class="btn small secondary">Mint Mentor Badge (admin)</button>
+        <input id="amountInput" placeholder="Amount (APT)" class="inp" />
+      </div>
+      <pre id="status">Status: idle</pre>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>SkillTrust • demo • Aptos devnet</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
