@@ -1,0 +1,16 @@
+[package]
+name = "credlancer"
+version = "1.0.0"
+authors = []
+
+[addresses]
+MyModule="0x873aa7583a3bad8a6f09fe56aa6c4f2ce2db93d25e0b62a72f2c01c0244d339b"
+
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-framework.git"
+rev = "mainnet"
+subdir = "aptos-framework"
+
+[dev-dependencies]
