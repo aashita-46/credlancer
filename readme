@@ -2,8 +2,8 @@ Problem Statement
 Unreliable Payments: Students and freelancers often fear scams or not getting paid for gigs.
 Fake Mentors: Beginners struggle to find genuine mentors, since anyone can claim expertise.
 Lack of Verifiable Proof: Students complete projects, internships, and courses, but have no tamper-proof way to showcase these skills to recruiters.
-💡 Solution
-SkillTrust is a decentralized platform built on Aptos blockchain that provides:
+ Solution:
+Credlancer is a decentralized platform built on Aptos blockchain that provides:
 
 Secure Escrow Payments: Smart contract-powered escrow ensures freelancers get paid safely
 Verified Mentors: Blockchain-backed mentor verification with NFT badges
@@ -28,6 +28,35 @@ Skill Badges: Soulbound NFTs for completed gigs/projects as tamper-proof resumes
 │  - Escrow       │
 │  - Badges       │
 └─────────────────┘
+
+For Freelancers
+
+✅ Secure payment guarantee through escrow
+✅ Build on-chain reputation with badges
+✅ Verifiable portfolio for recruiters
+✅ No middleman, lower fees
+
+For Clients
+
+✅ Only pay for approved work
+✅ Find verified freelancers
+✅ Dispute resolution mechanism
+✅ Transparent transaction history
+
+For Students
+
+✅ Earn skill badges from projects
+✅ Connect with verified mentors
+✅ Build tamper-proof resume
+✅ Stand out to recruiters
+
+For Mentors
+
+✅ Get blockchain verification
+✅ Enhanced credibility
+✅ Access to motivated students
+✅ Fair compensation
+
 📁 Project Structure
 skilltrust/
 ├── move/                          # Smart Contracts
@@ -51,6 +80,7 @@ skilltrust/
 ├── deploy.sh                      # Deployment script
 ├── contract-address.txt           # Deployed contract address
 └── README.md
+
 🛠️ Technology Stack
 Blockchain
 
@@ -72,38 +102,17 @@ Lucide React - Icons
 React Router - Navigation
 Petra Wallet - Wallet integration
 
-📋 Prerequisites
-Before you begin, ensure you have:
 
-Node.js (v18 or higher)
+Installation & Setup:-
 
-bash   node --version
-
-Aptos CLI
-
-bash   curl -fsSL "https://aptos.dev/scripts/install_cli.py" | python3
-   aptos --version
-
-Petra Wallet (Browser Extension)
-
-Install from Petra Wallet
-Create an account
-Get testnet APT from faucet
-
-
-Git
-
-bash   git --version
-🚀 Installation & Setup
 Step 1: Clone the Repository
-bashgit clone https://github.com/yourusername/skilltrust.git
-cd skilltrust
+bashgit clone https://github.com/yourusername/credlancer.git
+cd credlancer
+
 Step 2: Initialize Aptos Account
 bash# Initialize Aptos CLI with testnet
 aptos init --network testnet
 
-# This creates .aptos/config.yaml with your account details
-# Save your private key securely!
 Step 3: Setup Move Smart Contracts
 bash# Create the Move project structure
 mkdir -p move/sources
@@ -112,14 +121,15 @@ mkdir -p move/sources
 # - move/Move.toml
 # - move/sources/escrow.move
 # - move/sources/badges.move
+
 Step 4: Deploy Smart Contracts
 bash# Make deploy script executable
 chmod +x deploy.sh
 
-# Run deployment
 ./deploy.sh
+
 Expected output:
-🚀 Starting SkillTrust Smart Contract Deployment...
+🚀 Starting CredLancer Smart Contract Deployment...
 ✅ Move.toml created
 🔨 Compiling smart contracts...
 ✅ Compilation successful
@@ -131,14 +141,13 @@ Expected output:
 ✅ Contracts initialized!
 🎉 Deployment complete!
 Save the contract address from the output!
+
 Step 5: Setup Backend
 bash# Navigate to backend directory
 cd backend
 
-# Install dependencies
 npm install
 
-# Create .env file
 cat > .env << EOF
 APTOS_NETWORK=testnet
 CONTRACT_ADDRESS=YOUR_DEPLOYED_CONTRACT_ADDRESS
@@ -147,17 +156,15 @@ APTOS_FAUCET_URL=https://faucet.testnet.aptoslabs.com
 PORT=5000
 EOF
 
-# Start the backend server
+
 npm start
 Backend should be running on http://localhost:5000
 Step 6: Setup Frontend
 bash# Open new terminal
 cd frontend
 
-# Install dependencies
 npm install
 
-# Start the React app
 npm start
 Frontend should open at http://localhost:3000
 🎯 Usage Guide
@@ -197,77 +204,6 @@ Complete Gigs: Work on freelance projects
 Earn Badges: Collect skill badges (NFTs) for completed work
 Build Resume: Use on-chain badges as verifiable proof
 
-🔗 Smart Contract Functions
-Escrow Contract
-move// Initialize escrow module
-public entry fun initialize(account: &signer)
-
-// Create new contract
-public entry fun create_contract(
-    client: &signer,
-    freelancer: address,
-    amount: u64,
-    description: String,
-    module_owner: address
-)
-
-// Freelancer starts work
-public entry fun start_work(
-    freelancer: &signer,
-    contract_id: u64,
-    module_owner: address
-)
-
-// Freelancer submits work
-public entry fun submit_work(
-    freelancer: &signer,
-    contract_id: u64,
-    module_owner: address
-)
-
-// Client approves and releases payment
-public entry fun approve_work(
-    client: &signer,
-    contract_id: u64,
-    module_owner: address
-)
-
-// View contract details
-#[view]
-public fun get_contract(
-    module_owner: address,
-    contract_id: u64
-): EscrowContract
-Badges Contract
-move// Initialize badges module
-public entry fun initialize(admin: &signer)
-
-// Issue skill badge
-public entry fun issue_skill_badge(
-    issuer: &signer,
-    recipient: address,
-    name: String,
-    description: String,
-    metadata_uri: String,
-    module_owner: address
-)
-
-// Issue mentor verification badge
-public entry fun issue_mentor_badge(
-    admin: &signer,
-    mentor: address,
-    specialization: String,
-    experience_years: u64,
-    module_owner: address
-)
-
-// Check if mentor is verified
-#[view]
-public fun is_mentor_verified(mentor: address): bool
-
-// Get total badges issued
-#[view]
-public fun get_total_badges(module_owner: address): u64
 📡 API Endpoints
 User Endpoints
 
@@ -311,6 +247,39 @@ GET /api/stats - Get platform statistics
  User profile management
  Platform statistics dashboard
 
+🗺️ Roadmap
+Phase 1: MVP (Current) ✅
+
+ Escrow smart contracts
+ Badge NFT system
+ Basic frontend UI
+ Wallet integration
+ Testnet deployment
+
+Phase 2: Beta Launch (Month 1-2)
+
+ Mainnet deployment
+ Mobile responsive design
+ Advanced search & filters
+ Rating and review system
+ Email notifications
+
+Phase 3: Growth (Month 3-4)
+
+ Milestone-based payments
+ Multi-token support (USDC, USDT)
+ Chat/messaging system
+ Mobile app (React Native)
+ Referral program
+
+Phase 4: Scale (Month 5-6)
+
+ DAO governance
+ Staking mechanism
+ Advanced analytics dashboard
+ API for third-party integration
+ White-label solutions for enterprises
+
 🔮 Future Enhancements
 
  Dispute resolution mechanism
@@ -322,3 +291,9 @@ GET /api/stats - Get platform statistics
  Mobile app (React Native)
  DAO governance
  Staking mechanism for mentors
+
+🙏 Acknowledgments
+
+Aptos Foundation - For the powerful blockchain infrastructure
+Petra Wallet Team - For seamless wallet integration
+Move Community - For excellent documentation and support
