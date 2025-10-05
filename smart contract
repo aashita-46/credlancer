@@ -1,0 +1,82 @@
+module MyModule::SkillBadge {
+    use aptos_framework::signer;
+    use std::string::{Self, String};
+    use std::vector;
+
+    /// Struct representing a skill badge NFT
+    struct Badge has store, drop {
+        owner: address,
+        badge_type: String,
+        project_name: String,
+        timestamp: u64,
+    }
+
+    /// Collection to store multiple badges for a user
+    struct BadgeCollection has key {
+        badges: vector<Badge>,
+    }
+
+    /// Initialize badge collection for a new user
+    fun init_collection(account: &signer) {
+        move_to(account, BadgeCollection {
+            badges: vector::empty<Badge>(),
+        });
+    }
+
+    /// Mint a skill badge for completing a gig
+    public entry fun mint_skill_badge(
+        recipient: &signer,
+        project_name: String,
+        timestamp: u64
+    ) acquires BadgeCollection {
+        let recipient_addr = signer::address_of(recipient);
+        
+        // Initialize collection if needed
+        if (!exists<BadgeCollection>(recipient_addr)) {
+            init_collection(recipient);
+        };
+
+        let badge = Badge {
+            owner: recipient_addr,
+            badge_type: string::utf8(b"skill"),
+            project_name,
+            timestamp,
+        };
+
+        let collection = borrow_global_mut<BadgeCollection>(recipient_addr);
+        vector::push_back(&mut collection.badges, badge);
+    }
+
+    /// Mint a mentor verification badge
+    public entry fun mint_mentor_badge(
+        recipient: &signer,
+        mentor_name: String,
+        timestamp: u64
+    ) acquires BadgeCollection {
+        let recipient_addr = signer::address_of(recipient);
+        
+        if (!exists<BadgeCollection>(recipient_addr)) {
+            init_collection(recipient);
+        };
+
+        let badge = Badge {
+            owner: recipient_addr,
+            badge_type: string::utf8(b"mentor"),
+            project_name: mentor_name,
+            timestamp,
+        };
+
+        let collection = borrow_global_mut<BadgeCollection>(recipient_addr);
+        vector::push_back(&mut collection.badges, badge);
+    }
+
+    
+    #[view]
+    public fun get_badge_count(owner: address): u64 acquires BadgeCollection {
+        if (!exists<BadgeCollection>(owner)) {
+            return 0
+        };
+        let collection = borrow_global<BadgeCollection>(owner);
+        vector::length(&collection.badges)
+    }
+}
