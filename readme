@@ -1,0 +1,324 @@
+Problem Statement
+Unreliable Payments: Students and freelancers often fear scams or not getting paid for gigs.
+Fake Mentors: Beginners struggle to find genuine mentors, since anyone can claim expertise.
+Lack of Verifiable Proof: Students complete projects, internships, and courses, but have no tamper-proof way to showcase these skills to recruiters.
+💡 Solution
+SkillTrust is a decentralized platform built on Aptos blockchain that provides:
+
+Secure Escrow Payments: Smart contract-powered escrow ensures freelancers get paid safely
+Verified Mentors: Blockchain-backed mentor verification with NFT badges
+Skill Badges: Soulbound NFTs for completed gigs/projects as tamper-proof resumes
+
+🏗️ Architecture
+┌─────────────────┐
+│   Frontend      │
+│   (React.js)    │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   Backend API   │
+│   (Express.js)  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Aptos Blockchain│
+│  Smart Contracts│
+│  - Escrow       │
+│  - Badges       │
+└─────────────────┘
+📁 Project Structure
+skilltrust/
+├── move/                          # Smart Contracts
+│   ├── sources/
+│   │   ├── escrow.move           # Escrow contract
+│   │   └── badges.move           # Badge NFT contract
+│   └── Move.toml                 # Move package config
+├── backend/                       # Backend API
+│   ├── server.js                 # Express server
+│   ├── package.json
+│   └── .env
+├── frontend/                      # React Frontend
+│   ├── src/
+│   │   ├── App.jsx               # Main application
+│   │   ├── index.jsx
+│   │   └── index.css
+│   ├── public/
+│   │   └── index.html
+│   ├── package.json
+│   └── tailwind.config.js
+├── deploy.sh                      # Deployment script
+├── contract-address.txt           # Deployed contract address
+└── README.md
+🛠️ Technology Stack
+Blockchain
+
+Aptos Blockchain - Layer 1 blockchain for smart contracts
+Move Language - Smart contract programming language
+Aptos CLI - Command-line interface for deployment
+
+Backend
+
+Node.js & Express.js - REST API server
+Aptos SDK - Blockchain integration
+Axios - HTTP client
+
+Frontend
+
+React.js - UI framework
+Tailwind CSS - Styling
+Lucide React - Icons
+React Router - Navigation
+Petra Wallet - Wallet integration
+
+📋 Prerequisites
+Before you begin, ensure you have:
+
+Node.js (v18 or higher)
+
+bash   node --version
+
+Aptos CLI
+
+bash   curl -fsSL "https://aptos.dev/scripts/install_cli.py" | python3
+   aptos --version
+
+Petra Wallet (Browser Extension)
+
+Install from Petra Wallet
+Create an account
+Get testnet APT from faucet
+
+
+Git
+
+bash   git --version
+🚀 Installation & Setup
+Step 1: Clone the Repository
+bashgit clone https://github.com/yourusername/skilltrust.git
+cd skilltrust
+Step 2: Initialize Aptos Account
+bash# Initialize Aptos CLI with testnet
+aptos init --network testnet
+
+# This creates .aptos/config.yaml with your account details
+# Save your private key securely!
+Step 3: Setup Move Smart Contracts
+bash# Create the Move project structure
+mkdir -p move/sources
+
+# Copy the Move.toml, escrow.move, and badges.move files to:
+# - move/Move.toml
+# - move/sources/escrow.move
+# - move/sources/badges.move
+Step 4: Deploy Smart Contracts
+bash# Make deploy script executable
+chmod +x deploy.sh
+
+# Run deployment
+./deploy.sh
+Expected output:
+🚀 Starting SkillTrust Smart Contract Deployment...
+✅ Move.toml created
+🔨 Compiling smart contracts...
+✅ Compilation successful
+🧪 Running tests...
+🌐 Deploying to Aptos Testnet...
+✅ Deployment successful!
+📝 Contract deployed at: 0x1234...
+⚙️  Initializing contracts...
+✅ Contracts initialized!
+🎉 Deployment complete!
+Save the contract address from the output!
+Step 5: Setup Backend
+bash# Navigate to backend directory
+cd backend
+
+# Install dependencies
+npm install
+
+# Create .env file
+cat > .env << EOF
+APTOS_NETWORK=testnet
+CONTRACT_ADDRESS=YOUR_DEPLOYED_CONTRACT_ADDRESS
+APTOS_NODE_URL=https://fullnode.testnet.aptoslabs.com/v1
+APTOS_FAUCET_URL=https://faucet.testnet.aptoslabs.com
+PORT=5000
+EOF
+
+# Start the backend server
+npm start
+Backend should be running on http://localhost:5000
+Step 6: Setup Frontend
+bash# Open new terminal
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the React app
+npm start
+Frontend should open at http://localhost:3000
+🎯 Usage Guide
+For Clients (Hiring)
+
+Connect Wallet: Click "Connect Wallet" and approve Petra connection
+Create Contract:
+
+Go to "Contracts" page
+Click "Create Contract"
+Enter freelancer's wallet address
+Set amount and description
+Submit (funds will be locked in escrow)
+
+
+Review Work: When freelancer submits, review and approve
+Release Payment: Click "Approve & Release Payment" to complete
+
+For Freelancers
+
+Connect Wallet: Connect your Petra wallet
+View Contracts: See contracts where you're the freelancer
+Start Work: Click "Start Work" on assigned contracts
+Submit Work: Click "Submit Work" when done
+Get Paid: Receive payment + skill badge automatically
+
+For Mentors
+
+Register: Create profile as mentor
+Get Verified: Admin verifies and issues mentor badge (NFT)
+Appear in Listing: Verified mentors show in "Mentors" page
+
+For Students
+
+Find Mentors: Browse verified mentors
+Complete Gigs: Work on freelance projects
+Earn Badges: Collect skill badges (NFTs) for completed work
+Build Resume: Use on-chain badges as verifiable proof
+
+🔗 Smart Contract Functions
+Escrow Contract
+move// Initialize escrow module
+public entry fun initialize(account: &signer)
+
+// Create new contract
+public entry fun create_contract(
+    client: &signer,
+    freelancer: address,
+    amount: u64,
+    description: String,
+    module_owner: address
+)
+
+// Freelancer starts work
+public entry fun start_work(
+    freelancer: &signer,
+    contract_id: u64,
+    module_owner: address
+)
+
+// Freelancer submits work
+public entry fun submit_work(
+    freelancer: &signer,
+    contract_id: u64,
+    module_owner: address
+)
+
+// Client approves and releases payment
+public entry fun approve_work(
+    client: &signer,
+    contract_id: u64,
+    module_owner: address
+)
+
+// View contract details
+#[view]
+public fun get_contract(
+    module_owner: address,
+    contract_id: u64
+): EscrowContract
+Badges Contract
+move// Initialize badges module
+public entry fun initialize(admin: &signer)
+
+// Issue skill badge
+public entry fun issue_skill_badge(
+    issuer: &signer,
+    recipient: address,
+    name: String,
+    description: String,
+    metadata_uri: String,
+    module_owner: address
+)
+
+// Issue mentor verification badge
+public entry fun issue_mentor_badge(
+    admin: &signer,
+    mentor: address,
+    specialization: String,
+    experience_years: u64,
+    module_owner: address
+)
+
+// Check if mentor is verified
+#[view]
+public fun is_mentor_verified(mentor: address): bool
+
+// Get total badges issued
+#[view]
+public fun get_total_badges(module_owner: address): u64
+📡 API Endpoints
+User Endpoints
+
+POST /api/users/register - Register new user
+GET /api/users/:walletAddress - Get user by wallet
+GET /api/users?role=mentor - Get users by role
+
+Contract Endpoints
+
+POST /api/contracts/create - Create new escrow contract
+GET /api/contracts - Get all contracts
+GET /api/contracts/:id - Get specific contract
+PUT /api/contracts/:id/status - Update contract status
+
+Badge Endpoints
+
+POST /api/badges/issue - Issue new badge
+GET /api/badges/:walletAddress - Get user's badges
+GET /api/badges?badgeType=SKILL - Filter badges by type
+
+Mentor Endpoints
+
+POST /api/mentors/verify - Verify mentor
+GET /api/mentors - Get all verified mentors
+
+Statistics
+
+GET /api/stats - Get platform statistics
+
+🎨 Features
+✅ Implemented Features
+
+ Secure escrow smart contract
+ Multi-stage contract workflow (Created → In Progress → Submitted → Completed)
+ Skill badge NFT system
+ Mentor verification system
+ Wallet integration (Petra)
+ React frontend with Tailwind CSS
+ Express.js backend API
+ Real-time contract status updates
+ User profile management
+ Platform statistics dashboard
+
+🔮 Future Enhancements
+
+ Dispute resolution mechanism
+ Rating and review system
+ Multi-token support (USDC, USDT)
+ Milestone-based payments
+ Chat/messaging system
+ Advanced search and filters
+ Mobile app (React Native)
+ DAO governance
+ Staking mechanism for mentors
