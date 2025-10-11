@@ -1,18 +1,18 @@
-from flask import Flask, request, jsonify
+from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 import sqlite3
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="frontend")
 CORS(app)
 
-# ---------- DATABASE SETUP ----------
 def init_db():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT,
-                    role TEXT,   -- student / mentor / client
+                    role TEXT,
                     wallet TEXT
                 )''')
     c.execute('''CREATE TABLE IF NOT EXISTS gigs (
@@ -28,12 +28,15 @@ def init_db():
 
 init_db()
 
-# ---------- ROUTES ----------
 @app.route("/")
-def home():
-    return jsonify({"message": "Backend is running ✅"})
+def serve_index():
+    return app.send_static_file("index.html")
 
-# Create a new user
+@app.route("/<path:path>")
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
+
 @app.route("/api/users", methods=["POST"])
 def create_user():
     data = request.json
@@ -52,10 +55,10 @@ def create_gig():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
     c.execute("INSERT INTO gigs (title, description, client_id, student_id, status) VALUES (?, ?, ?, ?, ?)",
-              (data["title"], data["description"], data.get("client_id"), data.get("student_id"), "open"))
+              (data["title"], data.get("description", ""), data.get("client_id"), data.get("student_id"), "open"))
     conn.commit()
     conn.close()
-    return jsonify({"message": "Gig created successfully"}), 201
+    return jsonify({"message": "Gig created successfully", "id": 1}), 201
 
 # Get all gigs
 @app.route("/api/gigs", methods=["GET"])
