@@ -6,6 +6,7 @@ import os
 app = Flask(__name__, static_folder="frontend")
 CORS(app)
 
+
 def init_db():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
@@ -28,6 +29,7 @@ def init_db():
 
 init_db()
 
+
 @app.route("/")
 def serve_index():
     return app.send_static_file("index.html")
@@ -36,7 +38,8 @@ def serve_index():
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
-
+# ---------- API ROUTES ----------
+# Create a new user
 @app.route("/api/users", methods=["POST"])
 def create_user():
     data = request.json
